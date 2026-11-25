@@ -6,7 +6,7 @@
   <title>La Vie en Rose — Joyeux anniversaire Emiliano</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Italiana&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -68,13 +68,13 @@
   </nav>
   <div id="yt" aria-hidden="true" style="position:fixed;left:0;bottom:0;width:1px;height:1px;opacity:0;pointer-events:none"></div>
   <audio id="bgm" src="audio/musica.mp3" loop></audio>
-  <audio id="song" src="audio/parabens-fr.mp3"></audio>
+  <audio id="song" src="audio/AudioCleaner_Download_CHANSON - JOYEUX ANNIVERSAIRE.mp3"></audio>
 
   <!-- 1. Início (La Vie en Rose) -->
   <header id="hero" class="wrap">
+    <div class="hero-card">
     <p class="eyebrow" data-i="heroS"></p>
     <h1>Emiliano</h1>
-    <div id="age">22</div>
     <p class="script-quote hero-sub" data-i="heroH"></p>
     <div class="french-ornament" aria-hidden="true">
       <svg viewBox="0 0 180 20" width="160" height="18" fill="none">
@@ -84,7 +84,33 @@
       </svg>
     </div>
     <p class="muted" id="cd"></p>
+      </div>
+    <div id="age">22</div>
   </header>
+
+  <!-- Faixa em movimento (reage ao scroll) -->
+  <div class="marquee" aria-hidden="true">
+    <div class="mq-track">      <span data-i="mqT"></span>
+      <span data-i="mqT"></span>
+      <span data-i="mqT"></span>
+      <span data-i="mqT"></span>
+      <span data-i="mqT"></span>
+      <span data-i="mqT"></span>
+      <span data-i="mqT"></span>
+      <span data-i="mqT"></span>
+    </div>
+  </div>
+
+  <!-- Colagem interativa: arraste as fotos, toque nos adesivos -->
+  <section class="wrap collage-sec" id="collage">
+    <h2 data-i="collH"></h2>
+    <p class="muted" data-i="collS"></p>
+    <div class="board" id="board"></div>
+    <div class="coll-actions">
+      <button class="btn" id="shuffle" data-i="collB"></button>
+      <button class="btn" id="reset" data-i="collR"></button>
+    </div>
+  </section>
 
   <!-- 2. Carta + Cupidos Gravura Vintage + Countryside Francesa -->
   <section class="wrap">
@@ -147,7 +173,7 @@
   </section>
 
   <!-- 3. Gráfico Financeiro do Amor ("La Bourse de Notre Amour") -->
-  <section class="wrap">
+  <section class="wrap dark">
     <h2 data-i="finH"></h2>
     <p class="muted" data-i="finS"></p>
     <div class="glass finance-box">
@@ -170,7 +196,7 @@
   </section>
 
   <!-- 4. Parabéns em francês + Visualizador de Frequência -->
-  <section class="wrap">
+  <section class="wrap dark">
     <h2 data-i="songH"></h2>
     <div class="glass song">
       <canvas id="wave" aria-hidden="true"></canvas>
@@ -203,14 +229,14 @@
   </section>
 
   <!-- 6. Baralho de Cartas (Caderno Pontilhado & Vermelho Francês) -->
-  <section class="wrap">
+  <section class="wrap dark">
     <h2 data-i="reasH"></h2>
     <p class="script-quote reas-sub" data-i="reasS"></p>
     <div class="cards" id="cards"></div>
   </section>
 
   <!-- 7. Desejo + Bolo de Aniversário Interativo + Nota de Amor -->
-  <section class="wrap" id="wish">
+  <section class="wrap dark" id="wish">
     <h2 data-i="wishH"></h2>
     <p class="muted" data-i="wishP"></p>
     <div class="cake-stage">
@@ -253,5 +279,6 @@
   <div id="lb"><img alt=""></div>
 
   <script src="script.js"></script>
+  <script src="collage.js"></script>
 </body>
 </html>

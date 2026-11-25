@@ -1,17 +1,21 @@
 /* ==========================================================
-   1. VARIÁVEIS E RESET (La Vie en Rose: Vermelho, Rosé & Creme)
+   1. VARIÁVEIS E RESET — estilo editorial (preto, off-white, serifa fina)
+   Para por uma foto no topo: --hero-img: url('img/foto.jpg');
    ========================================================== */
 :root {
-  --bg: #1c0507;
+  --paper: #efeeec;
+  --black: #0b0b0b;
+  --red: #9e1b1f;
   --crimson: #8f171c;
-  --red: #b92328;
   --rose: #d96b82;
   --cream: #f6efe6;
-  --ink: #2a070b;
-  --text: #fbf4eb;
-  --muted: rgba(251, 244, 235, 0.74);
-  --glass: rgba(143, 23, 28, 0.18);
-  --glass-border: rgba(246, 239, 230, 0.28);
+  --ink: #0b0b0b;
+  --fg: #111;
+  --bgs: var(--paper);
+  --line: rgba(11, 11, 11, .55);
+  --muted: rgba(17, 17, 17, .66);
+  --hero-img: linear-gradient(135deg, #2a0a0d, #0b0b0b);
+  --font-display: 'Italiana', 'Cormorant Garamond', Georgia, serif;
   --font-script: 'Caveat', cursive;
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-sans: 'Montserrat', sans-serif;
@@ -19,131 +23,95 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--bg);
-  color: var(--text);
-  font: 300 1.05rem/1.85 var(--font-sans);
+  background: var(--paper);
+  color: var(--fg);
+  font: 300 1rem/1.85 var(--font-sans);
   overflow-x: hidden;
 }
 button { font-family: inherit; color: inherit; cursor: pointer; }
 
 /* ==========================================================
-   2. FUNDO ROMÂNTICO (Vermelho Aveludado + Canvas Artístico)
+   2. FUNDO — efeitos antigos desligados (o canvas segue rodando)
    ========================================================== */
-.blobs { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
-.blobs i { position: absolute; width: 54vmax; height: 54vmax; filter: blur(95px); opacity: .55; animation: drift 20s ease-in-out infinite alternate; }
-.blobs i:nth-child(1) { background: #8f171c; top: -18%; left: -12%; }
-.blobs i:nth-child(2) { background: #590b10; bottom: -22%; right: -10%; animation-delay: -7s; opacity: .65; }
-.blobs i:nth-child(3) { background: #c93b52; top: 38%; left: 36%; width: 34vmax; height: 34vmax; animation-delay: -13s; opacity: .28; }
-@keyframes drift { to { transform: translate(7vw, 5vh) scale(1.12); } }
-#fx { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+.blobs { display: none; }
+#fx { position: fixed; inset: 0; z-index: 89; pointer-events: none; }
 #burstCanvas { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
-
-/* Camada de Rosas Desabrochando ao Abrir / Rolar (Inspirado no vídeo) */
-.rose-bloom {
-  position: fixed;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(0.86);
-  transition: opacity 1.1s ease, transform 1.4s cubic-bezier(.22, 1, .36, 1);
-  mix-blend-mode: normal;
-}
-.rose-bloom.active {
-  opacity: 0.42;
-  transform: scale(1.04);
-}
-.rose-bloom.faded {
-  opacity: 0.14;
-  transform: scale(1.12);
-}
-#roseBouquetSvg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
+.rose-bloom { position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: 0 !important; }
+#roseBouquetSvg { width: 100%; height: 100%; display: block; }
 
 /* ==========================================================
    3. COMPONENTES BASE
    ========================================================== */
 .glass {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(246, 239, 230, .22);
-  border-radius: 20px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
 }
-.wrap { position: relative; z-index: 5; max-width: 960px; margin: auto; padding: 86px 22px; text-align: center; }
-h1, h2 { font-family: var(--font-serif); font-weight: 600; }
-h1 {
-  font-size: clamp(3.5rem, 11vw, 6.2rem);
-  font-style: italic;
-  color: var(--cream);
-  letter-spacing: .03em;
-  text-shadow: 0 0 36px rgba(185, 35, 40, .45);
+.wrap {
+  position: relative; z-index: 5; max-width: 960px; margin: auto; padding: 96px 22px; text-align: center;
+  background: var(--bgs); color: var(--fg);
+  box-shadow: 0 0 0 100vmax var(--bgs);
+  clip-path: inset(0 -100vmax);
 }
+/* seções pretas (como a parte escura da referência) */
+.wrap.dark {
+  --fg: #f2f0ed;
+  --bgs: var(--black);
+  --line: rgba(242, 240, 237, .38);
+  --muted: rgba(242, 240, 237, .7);
+}
+h1, h2 { font-family: var(--font-display); font-weight: 400; color: var(--fg); }
+h1 { text-transform: uppercase; letter-spacing: .06em; }
 h2 {
-  font-size: clamp(1.7rem, 4.5vw, 2.4rem);
-  font-style: italic;
-  letter-spacing: .1em;
-  color: var(--cream);
-  margin-bottom: 36px;
-  padding-bottom: 12px;
-  display: inline-block;
-  border-bottom: 1px solid rgba(246, 239, 230, .42);
+  font-size: clamp(2rem, 6vw, 3.1rem);
+  letter-spacing: .02em;
+  margin-bottom: 40px;
+  display: block;
+  line-height: 1.1;
 }
+h2::after { content: "..."; display: block; font-size: 1.4rem; letter-spacing: .3em; margin-top: 6px; opacity: .7; }
 .eyebrow {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   text-transform: uppercase;
-  letter-spacing: .38em;
-  font-size: .76rem;
-  font-weight: 500;
-  color: var(--cream);
-  opacity: .88;
+  letter-spacing: .1em;
+  font-size: clamp(1.3rem, 5.4vw, 2.2rem);
+  line-height: 1.15;
+  color: var(--fg);
 }
 .script-quote {
   font-family: var(--font-script);
-  font-size: clamp(1.65rem, 4.5vw, 2.35rem);
+  font-size: clamp(1.5rem, 4.5vw, 2.1rem);
   font-weight: 600;
-  color: var(--cream);
+  color: var(--red);
   line-height: 1.25;
 }
-.hero-sub { margin-top: -6px; }
-.reas-sub { margin-bottom: 26px; }
-.french-ornament { margin: 8px 0; opacity: .92; }
+section.wrap .script-quote { color: var(--fg); }
+.hero-sub { margin-top: 4px; }
+.reas-sub { margin-bottom: 30px; }
+.french-ornament { margin: 8px 0; }
+.french-ornament line { stroke: #0b0b0b; stroke-opacity: .6; }
 .muted {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 1.28rem;
+  font-family: var(--font-sans);
+  font-size: .82rem;
+  letter-spacing: .06em;
   color: var(--muted);
   margin-bottom: 26px;
 }
 .btn {
-  background: var(--red);
-  color: var(--cream);
-  border: 1px solid rgba(246, 239, 230, .45);
-  border-radius: 999px;
-  padding: 14px 36px;
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--fg);
+  border-radius: 0;
+  padding: 12px 28px;
   text-transform: uppercase;
-  letter-spacing: .18em;
+  letter-spacing: .24em;
   font-weight: 500;
-  font-size: .78rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, .4);
-  transition: transform .25s, background .25s, box-shadow .25s, color .25s;
+  font-size: .66rem;
+  transition: background .25s, color .25s;
 }
-.btn:hover {
-  background: var(--cream);
-  color: var(--ink);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 28px rgba(185, 35, 40, .5);
-}
-.icon-label-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
+.btn:hover { background: var(--fg); color: var(--bgs); }
+.icon-label-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
 
 /* ==========================================================
    4. CAPA E BARRA
@@ -151,92 +119,83 @@ h2 {
 #cover {
   position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 24px; text-align: center; padding: 20px;
-  background: radial-gradient(circle at center, rgba(125, 20, 24, .95), rgba(24, 4, 6, .98));
+  background: var(--paper); color: var(--fg);
   transition: opacity 1.1s, visibility 1.1s;
-  border-radius: 0;
-}
-#cover.off { opacity: 0; visibility: hidden; }
-.envelope {
-  background: none;
   border: none;
-  animation: beat 1.8s ease-in-out infinite;
-  filter: drop-shadow(0 10px 26px rgba(0, 0, 0, .55));
 }
+#cover .script-quote { color: var(--fg); }
+#cover.off { opacity: 0; visibility: hidden; }
+.envelope { background: none; border: none; animation: beat 1.8s ease-in-out infinite; filter: drop-shadow(0 10px 22px rgba(0, 0, 0, .3)); }
 @keyframes beat { 50% { transform: scale(1.08); } }
 #bar { position: fixed; top: 14px; right: 14px; z-index: 80; display: flex; gap: 8px; }
-#bar button { padding: 8px 16px; font-size: .78rem; letter-spacing: .12em; border-radius: 999px; color: var(--cream); }
+#bar button { padding: 8px 16px; font-size: .68rem; letter-spacing: .18em; background: #fff; color: #0b0b0b; border: 1px solid #0b0b0b; border-radius: 0; }
 .icon-btn { display: flex; align-items: center; justify-content: center; }
 
 /* ==========================================================
-   5. INÍCIO
+   5. INÍCIO — banner + cartão com moldura + número gigante cortado
    ========================================================== */
-#hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; }
+#hero {
+  max-width: none; width: 100%; margin: 0; box-shadow: none; clip-path: none;
+  position: relative; overflow: hidden;
+  min-height: 100vh; padding: calc(62vh - 190px) 22px 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  background: linear-gradient(to bottom, transparent 62%, var(--paper) 62%), var(--hero-img) center / cover no-repeat;
+}
+.hero-card {
+  position: relative; z-index: 2;
+  width: min(92vw, 600px);
+  background: var(--paper); color: #111;
+  border: 2px solid #0b0b0b;
+  padding: 40px 28px 26px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.hero-card::before { content: "✦"; position: absolute; top: 14px; left: 16px; font-size: 1.5rem; color: #0b0b0b; }
+.hero-card::after { content: "✦"; position: absolute; bottom: 52px; right: 18px; font-size: .9rem; color: #0b0b0b; }
+#hero h1 { position: relative; display: inline-block; font-size: clamp(2rem, 8vw, 3.4rem); padding: .12em .35em; margin: 6px 0; }
+#hero h1::after {
+  content: ""; position: absolute; inset: -2px -8px;
+  border: 1.5px solid var(--red); border-radius: 50%; transform: rotate(-2.5deg);
+}
+#hero .muted { margin: 4px 0 0; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; }
 #age {
-  font: italic 700 clamp(6.5rem, 28vw, 12.5rem)/0.95 var(--font-serif);
-  background: linear-gradient(180deg, var(--cream), #e38b90);
-  -webkit-background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 0 28px rgba(185, 35, 40, .4));
+  position: absolute; z-index: 1; right: -1vw; bottom: -.12em;
+  font: 400 clamp(8rem, 30vw, 17rem)/.85 var(--font-display);
+  color: #0b0b0b;
 }
 
 /* ==========================================================
-   6. CARTA + CUPIDOS GRAVURA VINTAGE + COUNTRYSIDE FRANCÊS
+   6. CARTA + CUPIDOS + COUNTRYSIDE
    ========================================================== */
-.letter-row { display: grid; grid-template-columns: 102px 1fr 102px; gap: 12px; align-items: center; }
-.letter { padding: 42px 36px 0; text-align: left; overflow: hidden; }
+.letter-row { display: grid; grid-template-columns: 120px 1fr 120px; gap: 0; align-items: stretch; }
+.letter { padding: 34px 36px 0; text-align: left; overflow: hidden; border: none; display: flex; flex-direction: column; justify-content: space-between; }
 .letter p {
-  font-family: var(--font-serif);
-  font-size: 1.35rem;
-  line-height: 1.78;
+  font-family: var(--font-sans);
+  font-size: .95rem;
+  line-height: 1.9;
   margin-bottom: 18px;
   opacity: 0;
   transform: translateY(16px);
   transition: 1s;
 }
 .letter p.in { opacity: 1; transform: none; }
-.letter .sig {
-  text-align: right;
-  font-family: var(--font-script);
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--cream);
-  margin-top: 10px;
-}
+.letter .sig { text-align: right; font-family: var(--font-script); font-size: 2rem; font-weight: 600; color: var(--red); margin-top: 10px; }
 
-.countryside-art {
-  position: relative;
-  margin: 24px -36px 0;
-  height: 95px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
+.countryside-art { position: relative; margin: 24px -36px 0; height: 95px; display: flex; align-items: flex-end; justify-content: center; filter: grayscale(1) contrast(1.1); }
 .countryside-art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.countryside-tag {
-  position: relative;
-  z-index: 2;
-  font-family: var(--font-script);
-  font-size: 1.35rem;
-  color: var(--cream);
-  opacity: .9;
-  padding-bottom: 8px;
-}
+.countryside-tag { position: relative; z-index: 2; font-family: var(--font-script); font-size: 1.35rem; color: #f6efe6; padding-bottom: 8px; }
 
 .cupid {
-  background: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: float 3.2s ease-in-out infinite;
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .5));
+  background: #0b0b0b; border: 1px solid #0b0b0b; border-radius: 0;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 240px;
   transition: transform .25s ease;
 }
-.cupid:hover { transform: scale(1.1); }
-.cupid.right { animation-delay: -1.6s; }
+.cupid svg { animation: float 3.2s ease-in-out infinite; }
+.cupid.right svg { animation-delay: -1.6s; }
+.cupid:hover svg { transform: scale(1.1); }
 .cupid .wing { transform-origin: 44px 56px; animation: flap 1.6s ease-in-out infinite alternate; }
 .cupid.right .wing { transform-origin: 76px 56px; }
-@keyframes float { 50% { transform: translateY(-14px); } }
+@keyframes float { 50% { transform: translateY(-12px); } }
 @keyframes flap { to { transform: rotate(-8deg) scaleY(0.92); } }
 
 /* ==========================================================
@@ -249,12 +208,12 @@ h2 {
   gap: 12px;
   margin-bottom: 20px;
   padding-bottom: 18px;
-  border-bottom: 1px solid rgba(246, 239, 230, .2);
+  border-bottom: 1px solid var(--line);
 }
 .kpi {
-  background: rgba(28, 5, 7, .55);
-  border: 1px solid rgba(246, 239, 230, .24);
-  border-radius: 14px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 0;
   padding: 12px 10px;
 }
 .kpi-label {
@@ -266,10 +225,10 @@ h2 {
   margin-bottom: 4px;
 }
 .kpi-val {
-  font-family: var(--font-serif);
-  font-size: 1.45rem;
-  font-weight: 700;
-  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--fg);
 }
 #loveChart { width: 100%; height: 230px; display: block; }
 
@@ -280,10 +239,10 @@ h2 {
 #wave { width: 100%; height: 64px; display: block; margin-bottom: 18px; }
 #lyrics { margin-bottom: 30px; }
 #lyrics .line { opacity: .38; transition: .4s; padding: 6px 0; }
-#lyrics .line b { display: block; font: italic 600 clamp(1.35rem, 4.8vw, 2rem) var(--font-serif); }
+#lyrics .line b { display: block; font: 400 clamp(1.35rem, 4.8vw, 2rem) var(--font-display); }
 #lyrics .line small { color: var(--muted); font-size: .85rem; }
 #lyrics .line.on { opacity: 1; transform: scale(1.05); }
-#lyrics .line.on b { color: var(--cream); text-shadow: 0 0 18px rgba(185, 35, 40, .8); }
+#lyrics .line.on b { color: var(--fg); }
 
 /* ==========================================================
    9. GALERIA FRANCESA COM EFEITO VIDRO FOSCO
@@ -293,34 +252,30 @@ h2 {
   max-width: 580px;
   margin: auto;
   padding: 24px;
-  border-radius: 26px;
-  background: linear-gradient(155deg, rgba(143, 23, 28, 0.28), rgba(28, 5, 7, 0.56));
-  backdrop-filter: blur(28px) saturate(165%);
-  -webkit-backdrop-filter: blur(28px) saturate(165%);
-  border: 1px solid rgba(246, 239, 230, 0.32);
-  box-shadow: 0 22px 54px rgba(0, 0, 0, .65), inset 0 1px 0 rgba(246, 239, 230, .28);
+  border-radius: 0;
+  background: transparent;
+  border: 1px solid var(--line);
+  box-shadow: none;
 }
-.viewport { width: 100%; overflow: hidden; border-radius: 18px; }
+.viewport { width: 100%; overflow: hidden; border-radius: 0; }
 .track { display: flex; width: 100%; transition: transform .75s cubic-bezier(.65, 0, .25, 1); }
 .slide { flex: 0 0 100%; width: 100%; min-width: 100%; display: flex; flex-direction: column; align-items: center; }
 
 .art-frame {
   position: relative;
   width: 100%;
-  padding: 12px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(246, 239, 230, 0.3);
-  box-shadow: inset 0 0 24px rgba(143, 23, 28, 0.25);
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
 }
 .art-frame::after {
   content: "";
   position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(246, 239, 230, 0.2);
-  border-radius: 13px;
+  inset: 0;
+  border: none;
+  border-radius: 0;
   pointer-events: none;
 }
 .art-frame img {
@@ -329,7 +284,7 @@ h2 {
   object-fit: cover;
   object-position: center 22%;
   display: block;
-  border-radius: 10px;
+  border-radius: 0;
   cursor: zoom-in;
   transition: transform .6s ease;
 }
@@ -339,17 +294,16 @@ h2 {
   margin-top: 14px;
   padding: 12px 20px;
   width: 100%;
-  border-radius: 14px;
-  background: rgba(28, 5, 7, 0.48);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(246, 239, 230, 0.22);
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--line);
 }
 .slide-caption p {
   font-family: var(--font-script);
   font-size: clamp(1.5rem, 4.4vw, 1.95rem);
   font-weight: 600;
-  color: var(--cream);
+  color: var(--fg);
   min-height: 46px;
   display: flex;
   align-items: center;
@@ -362,26 +316,23 @@ h2 {
   transform: translateY(-50%);
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  border: 1px solid rgba(246, 239, 230, .45);
-  background: rgba(28, 5, 7, .75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  color: var(--cream);
+  border-radius: 0;
+  border: 1px solid #fff;
+  background: #0b0b0b;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .5);
+  box-shadow: none;
   transition: all .3s ease;
   z-index: 5;
 }
 .nav svg { width: 20px; height: 20px; transition: transform .3s ease; }
 .nav:hover {
   background: var(--red);
-  color: var(--cream);
-  border-color: var(--cream);
-  box-shadow: 0 0 22px rgba(185, 35, 40, .65);
-  transform: translateY(-50%) scale(1.08);
+  color: #fff;
+  border-color: #fff;
+  transform: translateY(-50%) scale(1.06);
 }
 .nav.prev { left: 10px; }
 .nav.next { right: 10px; }
@@ -389,10 +340,10 @@ h2 {
 .nav.next:hover svg { transform: translateX(2px); }
 
 .dots { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
-.dots button { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--cream); background: transparent; transition: .35s; }
-.dots button.on { background: var(--red); border-color: var(--cream); width: 28px; border-radius: 999px; box-shadow: 0 0 12px var(--red); }
+.dots button { width: 10px; height: 10px; border-radius: 0; border: 1px solid var(--fg); background: transparent; transition: .35s; }
+.dots button.on { background: var(--fg); border-color: var(--fg); width: 28px; }
 #lb { position: fixed; inset: 0; z-index: 95; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(20, 3, 5, .92); backdrop-filter: blur(12px); }
-#lb img { max-width: 100%; max-height: 90vh; border-radius: 14px; border: 1px solid rgba(246, 239, 230, .35); }
+#lb img { max-width: 100%; max-height: 90vh; border-radius: 0; border: 1px solid rgba(246, 239, 230, .35); }
 
 /* ==========================================================
    10. BARALHO DE CARTAS
@@ -427,7 +378,7 @@ h2 {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  border-radius: 14px;
+  border-radius: 2px;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -504,7 +455,7 @@ h2 {
   gap: 14px;
   text-align: left;
   cursor: pointer;
-  border-radius: 18px;
+  border-radius: 0;
   transition: transform .25s ease, border-color .25s ease;
 }
 .love-note-card:hover {
@@ -516,7 +467,7 @@ h2 {
   height: 38px;
   border-radius: 50%;
   background: var(--red);
-  color: var(--cream);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -528,7 +479,7 @@ h2 {
   display: block;
   font-family: var(--font-script);
   font-size: 1.35rem;
-  color: var(--cream);
+  color: var(--fg);
   line-height: 1.1;
   margin-bottom: 6px;
 }
@@ -568,15 +519,16 @@ h2 {
   font-family: var(--font-script);
   font-size: clamp(2rem, 5.5vw, 2.7rem);
   font-weight: 600;
-  color: var(--cream);
-  text-shadow: 0 0 22px rgba(185, 35, 40, .55);
+  color: var(--fg);
 }
 footer {
   position: relative;
   z-index: 5;
-  padding: 40px;
+  background: #fff;
+  color: #0b0b0b;
+  padding: 48px 40px;
   text-align: center;
-  opacity: .75;
+  opacity: 1;
   font-size: .78rem;
   letter-spacing: .2em;
   text-transform: uppercase;
@@ -587,9 +539,10 @@ footer {
    ========================================================== */
 @media (max-width: 640px) {
   .letter-row { grid-template-columns: 1fr; }
-  .cupid { justify-content: center; }
+  .cupid { min-height: 110px; }
   .letter { order: 2; padding: 28px 22px 0; }
   .countryside-art { margin: 20px -22px 0; }
+  #hero { padding-top: calc(62vh - 170px); }
   .cupid.right { order: 3; }
   .finance-kpis { grid-template-columns: 1fr; }
   .cards { grid-template-columns: repeat(2, 1fr); gap: 14px; }
@@ -599,3 +552,58 @@ footer {
   .nav.prev { left: 6px; }
   .nav.next { right: 6px; }
 }
+
+/* ==========================================================
+   13. FAIXA EM MOVIMENTO
+   ========================================================== */
+.marquee { position: relative; z-index: 6; background: var(--black); color: #f2f0ed; overflow: hidden; padding: 16px 0; border-block: 1px solid #f2f0ed; }
+.mq-track { display: flex; width: max-content; will-change: transform; }
+.mq-track span { font-family: var(--font-display); font-size: clamp(1.4rem, 4.5vw, 2.4rem); text-transform: uppercase; letter-spacing: .1em; white-space: nowrap; padding-right: 2.2rem; }
+
+/* ==========================================================
+   14. COLAGEM INTERATIVA
+   ========================================================== */
+.collage-sec { padding-bottom: 80px; }
+.board { position: relative; max-width: 1000px; margin: 0 auto 34px; }
+.coll-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.pc {
+  position: absolute; cursor: grab; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+  opacity: 0; transform: rotate(var(--r, 0deg)) scale(.7) translateY(34px);
+  transition: opacity .6s ease, transform .6s cubic-bezier(.2, .9, .3, 1.2), box-shadow .25s;
+}
+.pc.in { opacity: 1; transform: rotate(var(--r, 0deg)); }
+.pc.in:hover { transform: rotate(calc(var(--r, 0deg) * .4)) scale(1.04); }
+.pc.moving { transition: left .9s cubic-bezier(.3, .8, .3, 1), top .9s cubic-bezier(.3, .8, .3, 1), transform .9s, opacity .6s; }
+.pc.drag { cursor: grabbing; transform: rotate(0deg) scale(1.08) !important; transition: transform .15s, box-shadow .15s; filter: drop-shadow(0 18px 22px rgba(0, 0, 0, .35)); }
+.pc img { display: block; width: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+.pc.photo img { filter: grayscale(1) contrast(1.1) brightness(1.15) blur(1.5px); transition: filter 2.4s ease; }
+.pc.photo.dev img, .pc.photo.drag img, .pc.photo:hover img { filter: none; }
+
+/* polaroid */
+.pol { background: #fff; padding: 3.5% 3.5% 0; box-shadow: 0 8px 20px rgba(0, 0, 0, .28); }
+.pol img { aspect-ratio: 1 / 1; }
+.pol .cap { font-family: var(--font-script); font-size: clamp(.95rem, 1.7vw, 1.15rem); line-height: 1.05; color: #1a1a1a; text-align: center; padding: 8px 4px 10px; min-height: 3.1em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 0; }
+.pol::before, .torn::before { content: ""; position: absolute; top: -11px; left: 50%; width: 34%; height: 22px; margin-left: -17%; transform: rotate(-4deg); background: rgba(255, 255, 255, .6); border: 1px solid rgba(0, 0, 0, .08); box-shadow: 0 1px 3px rgba(0, 0, 0, .12); z-index: 2; }
+.torn::before { background: rgba(158, 27, 31, .55); transform: rotate(5deg); }
+/* papel rasgado */
+.torn img { aspect-ratio: 4 / 5; clip-path: polygon(0 3%, 6% 0, 14% 2%, 24% 0, 36% 3%, 48% 0, 60% 2%, 72% 0, 85% 3%, 100% 0, 98% 22%, 100% 40%, 97% 60%, 100% 80%, 98% 100%, 84% 97%, 70% 100%, 56% 98%, 40% 100%, 26% 97%, 12% 100%, 0 98%, 2% 78%, 0 58%, 3% 38%, 0 20%); }
+.torn { filter: drop-shadow(0 8px 12px rgba(0, 0, 0, .3)); }
+
+/* adesivos */
+.st { display: flex; align-items: center; justify-content: center; }
+.st-star { font-size: clamp(1.8rem, 5vw, 3.2rem); color: #0b0b0b; line-height: 1; }
+.st-star.in { animation: twinkle 2.6s ease-in-out infinite; }
+@keyframes twinkle { 50% { transform: rotate(calc(var(--r) + 25deg)) scale(1.2); } }
+.st-heart { aspect-ratio: 1; border-radius: 50%; background: var(--red); color: #fff; box-shadow: 0 6px 14px rgba(0, 0, 0, .3); }
+.st-heart svg { width: 52%; height: 52%; animation: beat 1.8s ease-in-out infinite; }
+.st-badge { aspect-ratio: 1; border-radius: 50%; background: #0b0b0b; color: #f2f0ed; font-family: var(--font-display); font-size: clamp(1.2rem, 4vw, 2.2rem); border: 3px double #f2f0ed; outline: 2px solid #0b0b0b; }
+.st-badge.in { animation: spin 14s linear infinite; }
+@keyframes spin { to { transform: rotate(calc(var(--r) + 360deg)); } }
+.st-tag { background: #fff; border: 1px solid #0b0b0b; color: #0b0b0b; font-family: var(--font-display); font-size: clamp(.9rem, 2vw, 1.25rem); padding: 4px 14px; width: auto !important; white-space: nowrap; }
+.st-note { background: #f6efe6; color: #1a1a1a; padding: 16px 14px 14px; box-shadow: 0 8px 18px rgba(0, 0, 0, .25); font-family: var(--font-script); font-size: clamp(1.05rem, 2.2vw, 1.4rem); line-height: 1.15; text-align: left; display: block; }
+.st-note::before { content: ""; position: absolute; top: -10px; left: 50%; width: 30%; height: 20px; margin-left: -15%; background: rgba(158, 27, 31, .55); transform: rotate(-3deg); }
+
+/* cursor com rastro de estrelinhas */
+.trail { position: fixed; z-index: 120; pointer-events: none; color: #fff; mix-blend-mode: difference; font-size: 14px; animation: trailFade .8s ease-out forwards; }
+@keyframes trailFade { to { opacity: 0; transform: translateY(18px) rotate(120deg) scale(.4); } }
+#age { cursor: pointer; }

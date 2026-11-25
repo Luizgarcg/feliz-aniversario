@@ -23,6 +23,11 @@ const TEXT = {
     songH: "Une chanson pour toi",
     songB: "Chantons",
     galH: "Nos souvenirs",
+    collH: "Notre collage",
+    collS: "Déplace les photos, touche les autocollants ✦",
+    collB: "Mélanger",
+    collR: "Ranger",
+    mqT: "Joyeux anniversaire ✦ Emiliano ✦ 22 ans ✦",
     reasH: "Pourquoi je t'aime",
     reasS: "Je t'adore ♡ — tire une carte",
     wishH: "Fais un vœu",
@@ -110,6 +115,11 @@ const TEXT = {
     songH: "A song for you",
     songB: "Let's sing",
     galH: "Our memories",
+    collH: "Our collage",
+    collS: "Drag the photos, tap the stickers ✦",
+    collB: "Shuffle",
+    collR: "Tidy up",
+    mqT: "Happy birthday ✦ Emiliano ✦ 22 years ✦",
     reasH: "Why I love you",
     reasS: "Je t'adore ♡ — pick a card",
     wishH: "Make a wish",
@@ -288,6 +298,7 @@ function render() {
     .map((_, i) => `<button data-go="${i}" aria-label="${i + 1}"></button>`)
     .join("");
   goTo(state.slide);
+  if (window.updateCollageCaptions) window.updateCollageCaptions();
 
   $("#cards").innerHTML = t.reasons
     .map((r, i) => {
@@ -656,7 +667,7 @@ function drawCanvasHeart(ctx, x, y, size, color, rotation = 0) {
 }
 
 function burst(x, y, n = 18) {
-  const colors = ["#b92328", "#f6efe6", "#d6686c", "#8f171c"];
+  const colors = ["#b92328", "#0b0b0b", "#d6686c", "#8f171c"];
   for (let i = 0; i < n; i++) {
     const angle = Math.random() * Math.PI * 2;
     const speed = 1.8 + Math.random() * 4.5;
@@ -928,7 +939,7 @@ function startWaveform() {
    7. MÚSICA DE FUNDO (Lana Del Rey no YouTube) E CANTO
    ========================================================== */
 const MUSIC = {
-  youtubeUrl: "https://youtu.be/QbLGjeR9bvI?si=7xlnRq1pCNdP6DOY",
+  youtubeUrl: "https://youtu.be/o_1aF54DO60?si=mKArvJwCy11WFJEB",
 };
 
 const ytId = (MUSIC.youtubeUrl.match(
