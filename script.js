@@ -1,12 +1,12 @@
 /* ==========================================================
-   1. TEXTOS (FR / EN) — estética francesa e manuscrita
+   1. TEXTOS (FR / EN) — La Vie en Rose & Amor Francês
    ========================================================== */
 const TEXT = {
   fr: {
-    coverT: "Un petit quelque chose pour toi…",
+    coverT: "La vie en rose — un petit quelque chose pour toi…",
     coverB: "Ouvrir la lettre",
     heroS: "Joyeux anniversaire",
-    heroH: "c'est de l'amour quand ça repose l'âme",
+    heroH: "la vie en rose avec toi",
     letterH: "Une lettre pour toi",
     finH: "La Bourse de Notre Amour",
     finS: "Croissance exponentielle depuis notre rencontre",
@@ -27,6 +27,7 @@ const TEXT = {
     reasS: "Je t'adore ♡ — tire une carte",
     wishH: "Fais un vœu",
     wishP: "Ferme les yeux, pense à ton souhait, puis souffle les bougies.",
+    noteTitle: "Petit mot doux pour Emiliano",
     wishB: "Souffler les bougies",
     wishBRelight: "Rallumer les bougies",
     foot: "Fait avec tout mon amour, pour toi",
@@ -63,7 +64,7 @@ const TEXT = {
       "Tu remplis chaque endroit d'énergie et de vie.",
       "Un café, un regard… et ma journée est déjà parfaite.",
       "Que toutes tes années soient aussi douces que ce jour.",
-      "À tes côtés, même la mer paraît plus belle.",
+      "À tes côtés, chaque instant devient plus beau.",
       "Mon garçon préféré, aujourd'hui et pour toujours.",
     ],
     reasons: [
@@ -82,12 +83,17 @@ const TEXT = {
       "Que la distance disparaisse bientôt",
       "Je t'aime, Emiliano. Joyeux anniversaire !",
     ],
+    loveNotes: [
+      "Mon cœur bat plus fort chaque fois que ton nom apparaît.",
+      "Joyeux 22 ans, mon amour — tu es la plus belle partie de ma vie.",
+      "À nos futurs rendez-vous, nos rires et notre histoire sans fin.",
+    ],
   },
   en: {
-    coverT: "A little something for you…",
+    coverT: "La vie en rose — a little something for you…",
     coverB: "Open the letter",
     heroS: "Happy birthday",
-    heroH: "c'est de l'amour quand ça repose l'âme",
+    heroH: "la vie en rose with you",
     letterH: "A letter for you",
     finH: "The Stock Market of Our Love",
     finS: "Exponential growth since the day we met",
@@ -108,6 +114,7 @@ const TEXT = {
     reasS: "Je t'adore ♡ — pick a card",
     wishH: "Make a wish",
     wishP: "Close your eyes, think of your wish, then blow out the candles.",
+    noteTitle: "Sweet note for Emiliano",
     wishB: "Blow out the candles",
     wishBRelight: "Relight candles",
     foot: "Made with all my love, for you",
@@ -133,7 +140,7 @@ const TEXT = {
       "You fill every place with energy and life.",
       "A coffee, a glance… and my day is already perfect.",
       "May all your years be as sweet as today.",
-      "By your side, even the sea looks more beautiful.",
+      "By your side, every moment feels brighter.",
       "My favorite boy, today and always.",
     ],
     reasons: [
@@ -152,6 +159,11 @@ const TEXT = {
       "May the distance disappear soon",
       "I love you, Emiliano. Happy birthday!",
     ],
+    loveNotes: [
+      "My heart skips a beat every time your name pops up.",
+      "Happy 22nd birthday, my love — you're my favorite part of life.",
+      "Here's to our future dates, laughs, and endless story.",
+    ],
   },
 };
 
@@ -162,6 +174,7 @@ const $ = (sel) => document.querySelector(sel);
 const state = {
   lang: "fr",
   wish: 0,
+  noteIndex: 0,
   singing: false,
   timers: [],
   slide: 0,
@@ -170,6 +183,68 @@ const state = {
 };
 
 const CARD_RANKS = ["A♥", "K♥", "Q♥", "J♥", "10♥", "9♥", "8♥", "7♥"];
+
+/* ==========================================================
+   2b. BUQUÊ DE ROSAS DESABROCHANDO (INSPIRADO NO VÍDEO)
+   ========================================================== */
+function buildRoseBouquet() {
+  const layer = $("#bouquetLayer");
+  if (!layer) return;
+
+  // Rosas vermelhas, rosés e creme dispostas em camadas como um buquê que se abre
+  const roses = [
+    { cx: 400, cy: 300, r: 96, fill: "url(#petalCrimson)", petals: 8 },
+    { cx: 315, cy: 255, r: 78, fill: "url(#petalRose)", petals: 7 },
+    { cx: 485, cy: 255, r: 78, fill: "url(#petalRose)", petals: 7 },
+    { cx: 330, cy: 365, r: 82, fill: "url(#petalCrimson)", petals: 7 },
+    { cx: 470, cy: 365, r: 82, fill: "url(#petalCrimson)", petals: 7 },
+    { cx: 400, cy: 210, r: 70, fill: "url(#petalCream)", petals: 7 },
+    { cx: 245, cy: 315, r: 68, fill: "url(#petalCream)", petals: 6 },
+    { cx: 555, cy: 315, r: 68, fill: "url(#petalCream)", petals: 6 },
+    { cx: 400, cy: 415, r: 66, fill: "url(#petalRose)", petals: 6 },
+    { cx: 270, cy: 195, r: 58, fill: "url(#petalCrimson)", petals: 6 },
+    { cx: 530, cy: 195, r: 58, fill: "url(#petalCrimson)", petals: 6 },
+    { cx: 265, cy: 420, r: 58, fill: "url(#petalRose)", petals: 6 },
+    { cx: 535, cy: 420, r: 58, fill: "url(#petalRose)", petals: 6 },
+  ];
+
+  let svgContent = "";
+  roses.forEach((rose, idx) => {
+    const delay = idx * 0.05;
+    svgContent += `<g style="transform-origin:${rose.cx}px ${rose.cy}px;transition:transform 1.3s cubic-bezier(.22,1,.36,1) ${delay}s;">`;
+    for (let p = 0; p < rose.petals; p++) {
+      const ang = (p * 360) / rose.petals + idx * 17;
+      const rad = (ang * Math.PI) / 180;
+      const px = rose.cx + Math.cos(rad) * (rose.r * 0.28);
+      const py = rose.cy + Math.sin(rad) * (rose.r * 0.28);
+      svgContent += `
+        <ellipse cx="${px.toFixed(1)}" cy="${py.toFixed(1)}"
+          rx="${(rose.r * 0.56).toFixed(1)}" ry="${(rose.r * 0.38).toFixed(1)}"
+          transform="rotate(${ang} ${px.toFixed(1)} ${py.toFixed(1)})"
+          fill="${rose.fill}" stroke="rgba(246,239,230,0.25)" stroke-width="0.9"/>`;
+    }
+    // Miolo da rosa
+    svgContent += `<circle cx="${rose.cx}" cy="${rose.cy}" r="${(rose.r * 0.22).toFixed(1)}" fill="rgba(255,250,242,0.55)"/>`;
+    svgContent += `</g>`;
+  });
+
+  layer.innerHTML = svgContent;
+}
+
+function bindRoseScrollBloom() {
+  const bloom = $("#roseBloom");
+  if (!bloom) return;
+  addEventListener(
+    "scroll",
+    () => {
+      if (!bloom.classList.contains("active")) return;
+      const y = scrollY;
+      bloom.classList.toggle("faded", y > 260);
+      bloom.style.transform = `translateY(${(y * -0.08).toFixed(1)}px) scale(${(1.04 + Math.min(y * 0.00035, 0.22)).toFixed(3)})`;
+    },
+    { passive: true },
+  );
+}
 
 /* ==========================================================
    3. RENDERIZAÇÃO
@@ -254,7 +329,7 @@ function observeLetter() {
 }
 
 /* ==========================================================
-   3b. CARROSSEL DE FOTOS (CORRIGIDO)
+   3b. CARROSSEL DE FOTOS
    ========================================================== */
 function goTo(n) {
   const total = TEXT[state.lang].slides.length;
@@ -959,6 +1034,8 @@ function stopSinging(lines, song) {
    ========================================================== */
 function openCover() {
   $("#cover").classList.add("off");
+  const bloom = $("#roseBloom");
+  if (bloom) bloom.classList.add("active");
   music.play();
   burst(innerWidth / 2, innerHeight / 2, 28);
   launchHeartFirework(innerWidth / 2, innerHeight * 0.42);
@@ -979,6 +1056,23 @@ function bindEvents() {
     state.lang = state.lang === "fr" ? "en" : "fr";
     render();
   };
+
+  const noteCard = $("#loveNoteBtn");
+  if (noteCard) {
+    noteCard.onclick = () => {
+      const t = TEXT[state.lang];
+      const msg = t.loveNotes[state.noteIndex++ % t.loveNotes.length];
+      $("#wishMsg").textContent = msg;
+      noteCard.classList.add("playing");
+      $("#notePlayIcon").innerHTML =
+        `<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`;
+      burst(innerWidth / 2, innerHeight * 0.72, 12);
+      setTimeout(() => {
+        noteCard.classList.remove("playing");
+        $("#notePlayIcon").innerHTML = `<polygon points="6,4 20,12 6,20"/>`;
+      }, 3200);
+    };
+  }
 
   $("#wishBtn").onclick = () => {
     const t = TEXT[state.lang];
@@ -1021,6 +1115,8 @@ function bindEvents() {
 /* ==========================================================
    9. INÍCIO
    ========================================================== */
+buildRoseBouquet();
+bindRoseScrollBloom();
 render();
 bindEvents();
 bindCarousel();

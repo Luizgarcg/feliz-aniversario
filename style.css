@@ -1,10 +1,11 @@
 /* ==========================================================
-   1. VARIÁVEIS E RESET (Estética Francesa: Vermelho Profundo, Creme & Manuscrito)
+   1. VARIÁVEIS E RESET (La Vie en Rose: Vermelho, Rosé & Creme)
    ========================================================== */
 :root {
   --bg: #1c0507;
   --crimson: #8f171c;
   --red: #b92328;
+  --rose: #d96b82;
   --cream: #f6efe6;
   --ink: #2a070b;
   --text: #fbf4eb;
@@ -32,10 +33,35 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .blobs i { position: absolute; width: 54vmax; height: 54vmax; filter: blur(95px); opacity: .55; animation: drift 20s ease-in-out infinite alternate; }
 .blobs i:nth-child(1) { background: #8f171c; top: -18%; left: -12%; }
 .blobs i:nth-child(2) { background: #590b10; bottom: -22%; right: -10%; animation-delay: -7s; opacity: .65; }
-.blobs i:nth-child(3) { background: #b32429; top: 38%; left: 36%; width: 34vmax; height: 34vmax; animation-delay: -13s; opacity: .28; }
+.blobs i:nth-child(3) { background: #c93b52; top: 38%; left: 36%; width: 34vmax; height: 34vmax; animation-delay: -13s; opacity: .28; }
 @keyframes drift { to { transform: translate(7vw, 5vh) scale(1.12); } }
 #fx { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 #burstCanvas { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
+
+/* Camada de Rosas Desabrochando ao Abrir / Rolar (Inspirado no vídeo) */
+.rose-bloom {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.86);
+  transition: opacity 1.1s ease, transform 1.4s cubic-bezier(.22, 1, .36, 1);
+  mix-blend-mode: normal;
+}
+.rose-bloom.active {
+  opacity: 0.42;
+  transform: scale(1.04);
+}
+.rose-bloom.faded {
+  opacity: 0.14;
+  transform: scale(1.12);
+}
+#roseBouquetSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 
 /* ==========================================================
    3. COMPONENTES BASE
@@ -48,7 +74,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   box-shadow: 0 12px 40px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(246, 239, 230, .22);
   border-radius: 20px;
 }
-.wrap { position: relative; z-index: 2; max-width: 960px; margin: auto; padding: 86px 22px; text-align: center; }
+.wrap { position: relative; z-index: 5; max-width: 960px; margin: auto; padding: 86px 22px; text-align: center; }
 h1, h2 { font-family: var(--font-serif); font-weight: 600; }
 h1 {
   font-size: clamp(3.5rem, 11vw, 6.2rem);
@@ -260,7 +286,7 @@ h2 {
 #lyrics .line.on b { color: var(--cream); text-shadow: 0 0 18px rgba(185, 35, 40, .8); }
 
 /* ==========================================================
-   9. GALERIA FRANCESA COM EFEITO VIDRO FOSCO (CORRIGIDA)
+   9. GALERIA FRANCESA COM EFEITO VIDRO FOSCO
    ========================================================== */
 .carousel {
   position: relative;
@@ -274,24 +300,9 @@ h2 {
   border: 1px solid rgba(246, 239, 230, 0.32);
   box-shadow: 0 22px 54px rgba(0, 0, 0, .65), inset 0 1px 0 rgba(246, 239, 230, .28);
 }
-.viewport {
-  width: 100%;
-  overflow: hidden;
-  border-radius: 18px;
-}
-.track {
-  display: flex;
-  width: 100%;
-  transition: transform .75s cubic-bezier(.65, 0, .25, 1);
-}
-.slide {
-  flex: 0 0 100%;
-  width: 100%;
-  min-width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+.viewport { width: 100%; overflow: hidden; border-radius: 18px; }
+.track { display: flex; width: 100%; transition: transform .75s cubic-bezier(.65, 0, .25, 1); }
+.slide { flex: 0 0 100%; width: 100%; min-width: 100%; display: flex; flex-direction: column; align-items: center; }
 
 .art-frame {
   position: relative;
@@ -384,7 +395,7 @@ h2 {
 #lb img { max-width: 100%; max-height: 90vh; border-radius: 14px; border: 1px solid rgba(246, 239, 230, .35); }
 
 /* ==========================================================
-   10. BARALHO DE CARTAS (Vermelho Profundo & Caderno Pontilhado Creme)
+   10. BARALHO DE CARTAS
    ========================================================== */
 .cards {
   display: grid;
@@ -425,7 +436,6 @@ h2 {
   box-shadow: 0 12px 28px rgba(0, 0, 0, .5);
 }
 
-/* Verso da carta: vermelho profundo com traço manuscrito creme */
 .card .front {
   background: linear-gradient(155deg, #8f171c, #5c0c10);
   border: 1.5px solid rgba(246, 239, 230, .45);
@@ -456,7 +466,6 @@ h2 {
 }
 .card:hover .center-heart { transform: scale(1.16); }
 
-/* Frente da carta revelada: papel creme pontilhado com escrita manuscrita escura */
 .card .back {
   background-color: #f6efe6;
   background-image: radial-gradient(rgba(42, 7, 11, 0.22) 1px, transparent 1px);
@@ -480,11 +489,79 @@ h2 {
 .card .back .suit-top, .card .back .suit-bot { color: var(--red); }
 
 /* ==========================================================
-   11. BOLO DE ANIVERSÁRIO COM VELAS E DESEJO
+   11. BOLO, NOTA DE AMOR (VOICE NOTE STYLE) E DESEJO
    ========================================================== */
 #wish { min-height: 60vh; }
-.cake-stage { display: flex; justify-content: center; margin: 6px auto 22px; }
+.cake-stage { display: flex; justify-content: center; margin: 6px auto 16px; }
 #cakeCanvas { max-width: 100%; filter: drop-shadow(0 14px 30px rgba(185, 35, 40, .35)); cursor: pointer; }
+
+.love-note-card {
+  max-width: 390px;
+  margin: 0 auto 24px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 18px;
+  transition: transform .25s ease, border-color .25s ease;
+}
+.love-note-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(246, 239, 230, .55);
+}
+.note-play {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .4);
+}
+.note-body { flex: 1; }
+.note-title {
+  display: block;
+  font-family: var(--font-script);
+  font-size: 1.35rem;
+  color: var(--cream);
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.note-bars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 18px;
+}
+.note-bars i {
+  display: block;
+  width: 3px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(246, 239, 230, .55);
+  transition: height .25s ease, background .25s ease;
+}
+.love-note-card.playing .note-bars i {
+  background: var(--cream);
+  animation: eqBar .7s ease-in-out infinite alternate;
+}
+.love-note-card.playing .note-bars i:nth-child(2n) { animation-delay: .18s; }
+.love-note-card.playing .note-bars i:nth-child(3n) { animation-delay: .34s; }
+@keyframes eqBar {
+  from { height: 4px; }
+  to { height: 18px; }
+}
+.note-time {
+  font-size: .75rem;
+  color: var(--muted);
+  letter-spacing: .08em;
+}
+
 #wishMsg {
   margin-top: 28px;
   min-height: 64px;
@@ -496,7 +573,7 @@ h2 {
 }
 footer {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   padding: 40px;
   text-align: center;
   opacity: .75;
