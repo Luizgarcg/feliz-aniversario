@@ -8,14 +8,27 @@ const TEXT = {
     heroS: "Joyeux anniversaire",
     heroH: "mon amour",
     letterH: "Une lettre pour toi",
+    finH: "La Bourse de Notre Amour",
+    finS: "Croissance exponentielle depuis notre rencontre 📈",
+    kpi1L: "Rendement",
+    kpi2L: "Célébration",
+    kpi3L: "Bonheur",
+    chartLabels: [
+      "Rencontre",
+      "1er Sourire",
+      "Complicité",
+      "22 Ans",
+      "Pour Toujours",
+    ],
     songH: "Une chanson pour toi",
     songB: "Chantons ! 🎤",
     galH: "Nos souvenirs",
     reasH: "Pourquoi je t'aime",
     reasS: "Tire une carte du jeu ♥",
     wishH: "Fais un vœu",
-    wishP: "Ferme les yeux, pense à ton souhait, puis appuie.",
+    wishP: "Ferme les yeux, pense à ton souhait, puis souffle les bougies.",
     wishB: "Souffler les bougies 🕯️",
+    wishBRelight: "Rallumer les bougies ✨",
     foot: "Fait avec tout mon amour, pour toi ❤️",
     countdown: [
       "Aujourd'hui est un jour très spécial 🎉",
@@ -76,14 +89,27 @@ const TEXT = {
     heroS: "Happy birthday",
     heroH: "my love",
     letterH: "A letter for you",
+    finH: "The Stock Market of Our Love",
+    finS: "Exponential growth since the day we met 📈",
+    kpi1L: "Return",
+    kpi2L: "Milestone",
+    kpi3L: "Happiness",
+    chartLabels: [
+      "First Met",
+      "1st Smile",
+      "Connection",
+      "22 Years",
+      "Forever",
+    ],
     songH: "A song for you",
     songB: "Let's sing! 🎤",
     galH: "Our memories",
     reasH: "Why I love you",
     reasS: "Pick a card from the deck ♥",
     wishH: "Make a wish",
-    wishP: "Close your eyes, think of your wish, then press.",
+    wishP: "Close your eyes, think of your wish, then blow out the candles.",
     wishB: "Blow out the candles 🕯️",
+    wishBRelight: "Relight candles ✨",
     foot: "Made with all my love, for you ❤️",
     countdown: [
       "Today is a very special day 🎉",
@@ -140,6 +166,7 @@ const state = {
   timers: [],
   slide: 0,
   auto: null,
+  candlesLit: true,
 };
 
 const CARD_RANKS = ["A♥", "K♥", "Q♥", "J♥", "10♥", "9♥", "8♥", "7♥"];
@@ -155,6 +182,7 @@ function render() {
   document.querySelectorAll("[data-i]").forEach((el) => {
     if (typeof t[el.dataset.i] === "string") el.textContent = t[el.dataset.i];
   });
+  $("#wishBtn").textContent = state.candlesLit ? t.wishB : t.wishBRelight;
   $("#cd").textContent =
     new Date().getDate() === 26 ? t.countdown[0] : t.countdown[1];
 
@@ -167,7 +195,6 @@ function render() {
     )
     .join("");
 
-  // Slides com moldura em formato de coração
   $("#track").innerHTML = t.slides
     .map(
       (m, i) =>
@@ -185,7 +212,6 @@ function render() {
     .join("");
   goTo(state.slide);
 
-  // Baralho de cartas romântico
   $("#cards").innerHTML = t.reasons
     .map((r, i) => {
       const rank = CARD_RANKS[i % CARD_RANKS.length];
@@ -210,7 +236,6 @@ function render() {
   observeLetter();
 }
 
-/* Letra aparece suavemente ao rolar */
 function observeLetter() {
   const io = new IntersectionObserver(
     (entries) => {
@@ -277,7 +302,281 @@ function bindCarousel() {
 }
 
 /* ==========================================================
-   4. EFEITOS GRÁFICOS GENERATIVOS (ESTILO PYTHON / MATEMÁTICA)
+   4. GRÁFICO DE FINANÇAS DO AMOR (Estilo Matplotlib / Bolsa)
+   ========================================================== */
+function startFinanceChart() {
+  const cv = $("#loveChart");
+  if (!cv) return;
+  const cx = cv.getContext("2d");
+  let progress = 0;
+
+  function resizeChart() {
+    const dpr = window.devicePixelRatio || 1;
+    cv.width = cv.offsetWidth * dpr;
+    cv.height = cv.offsetHeight * dpr;
+  }
+  resizeChart();
+  addEventListener("resize", resizeChart);
+
+  const values = [18, 34, 52, 78, 96];
+
+  (function drawChart() {
+    const dpr = window.devicePixelRatio || 1;
+    const W = cv.width,
+      H = cv.height;
+    cx.clearRect(0, 0, W, H);
+
+    if (progress < 1) progress += 0.014;
+
+    const padL = 36 * dpr,
+      padR = 24 * dpr,
+      padT = 24 * dpr,
+      padB = 34 * dpr;
+    const chartW = W - padL - padR;
+    const chartH = H - padT - padB;
+
+    // Grid horizontal pontilhado (estilo gráfico financeiro)
+    cx.save();
+    cx.strokeStyle = "rgba(246, 214, 168, 0.14)";
+    cx.lineWidth = 1 * dpr;
+    cx.setLineDash([4 * dpr, 4 * dpr]);
+    for (let g = 0; g <= 4; g++) {
+      const gy = padT + (chartH / 4) * g;
+      cx.beginPath();
+      cx.moveTo(padL, gy);
+      cx.lineTo(W - padR, gy);
+      cx.stroke();
+    }
+    cx.restore();
+
+    // Calcula pontos da curva
+    const pts = values.map((v, i) => ({
+      x: padL + (chartW / (values.length - 1)) * i,
+      y: padT + chartH - (v / 100) * chartH,
+    }));
+
+    // Área sombreada sob a curva
+    const maxDrawX = padL + chartW * Math.min(progress, 1);
+    cx.save();
+    cx.beginPath();
+    cx.rect(0, 0, maxDrawX + 10 * dpr, H);
+    cx.clip();
+
+    const areaGrad = cx.createLinearGradient(0, padT, 0, padT + chartH);
+    areaGrad.addColorStop(0, "rgba(255, 107, 139, 0.35)");
+    areaGrad.addColorStop(1, "rgba(255, 107, 139, 0.0)");
+
+    cx.beginPath();
+    cx.moveTo(pts[0].x, padT + chartH);
+    pts.forEach((p) => cx.lineTo(p.x, p.y));
+    cx.lineTo(pts[pts.length - 1].x, padT + chartH);
+    cx.closePath();
+    cx.fillStyle = areaGrad;
+    cx.fill();
+
+    // Linha principal dourada/rosa
+    const lineGrad = cx.createLinearGradient(padL, 0, W - padR, 0);
+    lineGrad.addColorStop(0, "#ff6b8b");
+    lineGrad.addColorStop(1, "#f6d6a8");
+
+    cx.beginPath();
+    cx.strokeStyle = lineGrad;
+    cx.lineWidth = 3 * dpr;
+    pts.forEach((p, idx) => {
+      if (idx === 0) cx.moveTo(p.x, p.y);
+      else cx.lineTo(p.x, p.y);
+    });
+    cx.stroke();
+    cx.restore();
+
+    // Pontos e legendas
+    const labels = TEXT[state.lang].chartLabels;
+    pts.forEach((p, idx) => {
+      const pointThresh = idx / (pts.length - 1);
+      if (progress >= pointThresh) {
+        cx.beginPath();
+        cx.fillStyle = "#12060d";
+        cx.strokeStyle = idx === pts.length - 1 ? "#f6d6a8" : "#ff6b8b";
+        cx.lineWidth = 2.5 * dpr;
+        cx.arc(p.x, p.y, 5 * dpr, 0, Math.PI * 2);
+        cx.fill();
+        cx.stroke();
+
+        // Valor acima do último ponto
+        if (idx === pts.length - 1) {
+          cx.fillStyle = "#f6d6a8";
+          cx.font = `600 ${11 * dpr}px Montserrat, sans-serif`;
+          cx.textAlign = "center";
+          cx.fillText("ATH ♥", p.x, p.y - 12 * dpr);
+        }
+      }
+
+      cx.fillStyle = "rgba(251, 238, 242, 0.72)";
+      cx.font = `${10 * dpr}px Montserrat, sans-serif`;
+      cx.textAlign = "center";
+      cx.fillText(labels[idx], p.x, H - 10 * dpr);
+    });
+
+    requestAnimationFrame(drawChart);
+  })();
+}
+
+/* ==========================================================
+   5. BOLO DE ANIVERSÁRIO COM VELAS INTERATIVAS
+   ========================================================== */
+const smokes = [];
+
+function startBirthdayCake() {
+  const cv = $("#cakeCanvas");
+  if (!cv) return;
+  const cx = cv.getContext("2d");
+  let tick = 0;
+
+  // Clique direto no bolo também assopra/acende as velas
+  cv.onclick = () => $("#wishBtn").click();
+
+  (function drawCake() {
+    const W = cv.width,
+      H = cv.height;
+    cx.clearRect(0, 0, W, H);
+    tick += 0.08;
+
+    // Prato dourado
+    cx.beginPath();
+    cx.ellipse(W / 2, 224, 128, 16, 0, 0, Math.PI * 2);
+    cx.fillStyle = "#f6d6a8";
+    cx.fill();
+    cx.beginPath();
+    cx.ellipse(W / 2, 221, 118, 12, 0, 0, Math.PI * 2);
+    cx.fillStyle = "#d4a86a";
+    cx.fill();
+
+    // Base do bolo (andar inferior - chocolate/vinho)
+    cx.fillStyle = "#4a152b";
+    cx.beginPath();
+    cx.roundRect(72, 156, 176, 62, 12);
+    cx.fill();
+    cx.strokeStyle = "#f6d6a8";
+    cx.lineWidth = 1.5;
+    cx.stroke();
+
+    // Cobertura escorrendo (andar inferior)
+    cx.fillStyle = "#ff6b8b";
+    cx.beginPath();
+    cx.moveTo(72, 168);
+    for (let x = 72; x <= 248; x += 22) {
+      const drip = 168 + Math.sin(x * 0.3) * 9 + 10;
+      cx.quadraticCurveTo(x + 11, drip + 8, x + 22, 168);
+    }
+    cx.lineTo(248, 156);
+    cx.lineTo(72, 156);
+    cx.closePath();
+    cx.fill();
+
+    // Segundo andar do bolo (superior)
+    cx.fillStyle = "#611c39";
+    cx.beginPath();
+    cx.roundRect(102, 106, 116, 52, 10);
+    cx.fill();
+    cx.strokeStyle = "#f6d6a8";
+    cx.stroke();
+
+    // Cobertura superior creme/dourada
+    cx.fillStyle = "#fff1e0";
+    cx.beginPath();
+    cx.moveTo(102, 116);
+    for (let x = 102; x <= 218; x += 19.3) {
+      const drip = 116 + Math.cos(x * 0.4) * 7 + 8;
+      cx.quadraticCurveTo(x + 9.6, drip + 6, x + 19.3, 116);
+    }
+    cx.lineTo(218, 106);
+    cx.lineTo(102, 106);
+    cx.closePath();
+    cx.fill();
+
+    // Coração decorativo no centro do bolo
+    cx.fillStyle = "#ff6b8b";
+    cx.font = "20px serif";
+    cx.textAlign = "center";
+    cx.fillText("♥", W / 2, 196);
+
+    // 3 Velas no topo
+    const candleXs = [132, 160, 188];
+    candleXs.forEach((kx, idx) => {
+      // Corpo da vela
+      cx.fillStyle = idx === 1 ? "#f6d6a8" : "#ff9a5c";
+      cx.beginPath();
+      cx.roundRect(kx - 4, 72, 8, 34, 3);
+      cx.fill();
+
+      // Pavio
+      cx.strokeStyle = "#2b0918";
+      cx.lineWidth = 1.5;
+      cx.beginPath();
+      cx.moveTo(kx, 72);
+      cx.lineTo(kx, 65);
+      cx.stroke();
+
+      // Chama animada se estiver acesa
+      if (state.candlesLit) {
+        const flicker = Math.sin(tick + idx * 1.7) * 2.2;
+        const grad = cx.createRadialGradient(kx, 56, 1, kx, 56, 16);
+        grad.addColorStop(0, "rgba(255, 255, 220, 0.95)");
+        grad.addColorStop(0.5, "rgba(255, 180, 60, 0.65)");
+        grad.addColorStop(1, "rgba(255, 107, 139, 0)");
+
+        cx.fillStyle = grad;
+        cx.beginPath();
+        cx.arc(kx, 56, 16, 0, Math.PI * 2);
+        cx.fill();
+
+        // Gota da chama
+        cx.fillStyle = "#fff5b8";
+        cx.beginPath();
+        cx.moveTo(kx, 43 + flicker * 0.4);
+        cx.quadraticCurveTo(kx + 6, 56, kx, 64);
+        cx.quadraticCurveTo(kx - 6, 56, kx, 43 + flicker * 0.4);
+        cx.fill();
+      }
+    });
+
+    // Fumaça subindo ao assoprar
+    for (let i = smokes.length - 1; i >= 0; i--) {
+      const s = smokes[i];
+      s.y -= s.vy;
+      s.x += Math.sin(tick + i) * 0.6;
+      s.r += 0.18;
+      s.alpha -= 0.015;
+      if (s.alpha <= 0) {
+        smokes.splice(i, 1);
+        continue;
+      }
+      cx.beginPath();
+      cx.fillStyle = `rgba(251, 238, 242, ${s.alpha})`;
+      cx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      cx.fill();
+    }
+
+    requestAnimationFrame(drawCake);
+  })();
+}
+
+function blowCandlesSmoke() {
+  [132, 160, 188].forEach((kx) => {
+    for (let i = 0; i < 8; i++) {
+      smokes.push({
+        x: kx + (Math.random() - 0.5) * 6,
+        y: 62 - i * 3,
+        vy: 0.7 + Math.random() * 0.5,
+        r: 3 + Math.random() * 3,
+        alpha: 0.65,
+      });
+    }
+  });
+}
+
+/* ==========================================================
+   6. EFEITOS GRÁFICOS GENERATIVOS (FUNDO E ONDA SONORA)
    ========================================================== */
 const fireworks = [];
 
@@ -554,7 +853,7 @@ function startWaveform() {
 }
 
 /* ==========================================================
-   5. MÚSICA DE FUNDO (Lana Del Rey no YouTube ou arquivo) E CANTO
+   7. MÚSICA DE FUNDO (Lana Del Rey no YouTube) E CANTO
    ========================================================== */
 const MUSIC = {
   youtubeUrl: "https://youtu.be/QbLGjeR9bvI?si=7xlnRq1pCNdP6DOY",
@@ -654,7 +953,7 @@ function stopSinging(lines, song) {
 }
 
 /* ==========================================================
-   6. EVENTOS
+   8. EVENTOS
    ========================================================== */
 function openCover() {
   $("#cover").classList.add("off");
@@ -665,7 +964,12 @@ function openCover() {
 
 function shootFromCupid(el) {
   const r = el.getBoundingClientRect();
-  burst(r.left + r.width / 2, r.top + r.height / 2, 14, ["💘", "💖", "💗"]);
+  burst(r.left + r.width / 2, r.top + r.height / 2, 16, [
+    "💘",
+    "💖",
+    "✨",
+    "♥",
+  ]);
 }
 
 function bindEvents() {
@@ -678,17 +982,28 @@ function bindEvents() {
     state.lang = state.lang === "fr" ? "en" : "fr";
     render();
   };
+
   $("#wishBtn").onclick = () => {
-    $("#wishMsg").textContent = TEXT[state.lang].wishes[state.wish++ % 4];
-    launchHeartFirework(innerWidth * 0.5, innerHeight * 0.38);
-    setTimeout(
-      () => launchHeartFirework(innerWidth * 0.28, innerHeight * 0.45),
-      280,
-    );
-    setTimeout(
-      () => launchHeartFirework(innerWidth * 0.72, innerHeight * 0.45),
-      520,
-    );
+    const t = TEXT[state.lang];
+    if (state.candlesLit) {
+      state.candlesLit = false;
+      blowCandlesSmoke();
+      $("#wishBtn").textContent = t.wishBRelight;
+      $("#wishMsg").textContent = t.wishes[state.wish++ % t.wishes.length];
+      launchHeartFirework(innerWidth * 0.5, innerHeight * 0.36);
+      setTimeout(
+        () => launchHeartFirework(innerWidth * 0.28, innerHeight * 0.44),
+        280,
+      );
+      setTimeout(
+        () => launchHeartFirework(innerWidth * 0.72, innerHeight * 0.44),
+        520,
+      );
+    } else {
+      state.candlesLit = true;
+      $("#wishBtn").textContent = t.wishB;
+      burst(innerWidth / 2, innerHeight * 0.65, 14, ["🕯️", "✨", "💖"]);
+    }
   };
 
   document.addEventListener("click", (e) => {
@@ -707,11 +1022,13 @@ function bindEvents() {
 }
 
 /* ==========================================================
-   7. INÍCIO
+   9. INÍCIO
    ========================================================== */
 render();
 bindEvents();
 bindCarousel();
 startBackground();
+startFinanceChart();
 startWaveform();
+startBirthdayCake();
 loadYouTube();

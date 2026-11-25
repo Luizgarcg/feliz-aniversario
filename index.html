@@ -47,20 +47,102 @@
     <h1>Emiliano</h1>
     <div id="age">22</div>
     <p class="eyebrow" data-i="heroH"></p>
+    <div class="french-ornament">⸻ ❦ ⸻</div>
     <p class="muted" id="cd"></p>
   </header>
 
-  <!-- 2. Carta + dois cupidos -->
+  <!-- 2. Carta + Dois Cupidos Vetoriais + Paisagem Countryside Francesa -->
   <section class="wrap">
     <h2 data-i="letterH"></h2>
     <div class="letter-row">
-      <button class="cupid left" id="cupidL" aria-label="Cupid"><span>👼</span><span class="bow">🏹</span></button>
-      <article class="glass letter" id="letter"></article>
-      <button class="cupid right" id="cupidR" aria-label="Cupid"><span>👼</span><span class="bow">🏹</span></button>
+      <!-- Cupido Esquerdo (SVG Vetorial Animado) -->
+      <button class="cupid left" id="cupidL" aria-label="Cupid Left" title="Clique pour une flèche d'amour">
+        <svg viewBox="0 0 110 120" width="88" height="96">
+          <ellipse cx="52" cy="24" rx="14" ry="4" fill="none" stroke="#f6d6a8" stroke-width="2"/>
+          <path class="wing" d="M40 52 C14 32, 6 58, 36 68" fill="rgba(255,255,255,0.22)" stroke="#f6d6a8" stroke-width="1.6"/>
+          <path class="wing" d="M36 62 C12 52, 14 78, 38 78" fill="rgba(255,255,255,0.16)" stroke="#f6d6a8" stroke-width="1.4"/>
+          <circle cx="54" cy="40" r="11" fill="#f6d6a8"/>
+          <path d="M46 52 Q54 78 48 92 M56 54 Q66 74 62 90" stroke="#f6d6a8" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <path d="M74 34 Q96 58 74 82" fill="none" stroke="#ff6b8b" stroke-width="2.5"/>
+          <line x1="74" y1="34" x2="74" y2="82" stroke="#f6d6a8" stroke-width="1" stroke-dasharray="2 2"/>
+          <line x1="56" y1="58" x2="98" y2="58" stroke="#f6d6a8" stroke-width="2"/>
+          <polygon points="103,58 95,53 95,63" fill="#ff6b8b"/>
+        </svg>
+      </button>
+
+      <article class="glass letter" id="letter-box">
+        <div id="letter"></div>
+        <!-- Gráfico Ilustrativo: Countryside da França (Campos de Lavanda & Colinas) -->
+        <div class="countryside-art" aria-hidden="true">
+          <svg viewBox="0 0 600 110" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="sunGlow" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#f6d6a8" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#ff6b8b" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="hill1" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#3a1635" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#5c2349" stop-opacity="0.7"/>
+              </linearGradient>
+              <linearGradient id="lavender" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#8a4fff" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#2a0d24" stop-opacity="0.9"/>
+              </linearGradient>
+            </defs>
+            <circle cx="460" cy="46" r="26" fill="url(#sunGlow)"/>
+            <!-- Colinas francesas -->
+            <path d="M0,78 Q150,42 320,74 T600,62 L600,110 L0,110 Z" fill="url(#hill1)"/>
+            <!-- Silhueta de ciprestes provençais -->
+            <path d="M125,64 Q130,36 135,64 Z M144,62 Q149,30 154,62 Z M415,68 Q420,40 425,68 Z" fill="#240b1d"/>
+            <!-- Fileiras de lavanda da campagne française -->
+            <path d="M0,92 Q180,68 360,90 T600,80 L600,110 L0,110 Z" fill="url(#lavender)"/>
+            <path d="M0,102 Q220,84 440,100 T600,94 L600,110 L0,110 Z" fill="#1c0815"/>
+          </svg>
+          <span class="countryside-tag">✦ Douce Campagne Française ✦</span>
+        </div>
+      </article>
+
+      <!-- Cupido Direito (SVG Vetorial Animado) -->
+      <button class="cupid right" id="cupidR" aria-label="Cupid Right" title="Clique pour une flèche d'amour">
+        <svg viewBox="0 0 110 120" width="88" height="96">
+          <ellipse cx="58" cy="24" rx="14" ry="4" fill="none" stroke="#f6d6a8" stroke-width="2"/>
+          <path class="wing" d="M70 52 C96 32, 104 58, 74 68" fill="rgba(255,255,255,0.22)" stroke="#f6d6a8" stroke-width="1.6"/>
+          <path class="wing" d="M74 62 C98 52, 96 78, 72 78" fill="rgba(255,255,255,0.16)" stroke="#f6d6a8" stroke-width="1.4"/>
+          <circle cx="56" cy="40" r="11" fill="#f6d6a8"/>
+          <path d="M64 52 Q56 78 62 92 M54 54 Q44 74 48 90" stroke="#f6d6a8" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <path d="M36 34 Q14 58 36 82" fill="none" stroke="#ff6b8b" stroke-width="2.5"/>
+          <line x1="36" y1="34" x2="36" y2="82" stroke="#f6d6a8" stroke-width="1" stroke-dasharray="2 2"/>
+          <line x1="54" y1="58" x2="12" y2="58" stroke="#f6d6a8" stroke-width="2"/>
+          <polygon points="7,58 15,53 15,63" fill="#ff6b8b"/>
+        </svg>
+      </button>
     </div>
   </section>
 
-  <!-- 3. Parabéns em francês + Visualizador de Frequência -->
+  <!-- 3. Gráfico Financeiro do Amor ("La Bourse de Notre Amour") -->
+  <section class="wrap">
+    <h2 data-i="finH"></h2>
+    <p class="muted" data-i="finS"></p>
+    <div class="glass finance-box">
+      <div class="finance-kpis">
+        <div class="kpi">
+          <span class="kpi-label" data-i="kpi1L"></span>
+          <strong class="kpi-val">+∞ %</strong>
+        </div>
+        <div class="kpi">
+          <span class="kpi-label" data-i="kpi2L"></span>
+          <strong class="kpi-val">22 ANS</strong>
+        </div>
+        <div class="kpi">
+          <span class="kpi-label" data-i="kpi3L"></span>
+          <strong class="kpi-val">100% ♥</strong>
+        </div>
+      </div>
+      <canvas id="loveChart" aria-label="Gráfico de crescimento do nosso amor"></canvas>
+    </div>
+  </section>
+
+  <!-- 4. Parabéns em francês + Visualizador de Frequência -->
   <section class="wrap">
     <h2 data-i="songH"></h2>
     <div class="glass song">
@@ -70,7 +152,7 @@
     </div>
   </section>
 
-  <!-- 4. Galeria Romântica em Coração -->
+  <!-- 5. Galeria Romântica em Coração -->
   <section class="wrap">
     <h2 data-i="galH"></h2>
     <div class="carousel glass" id="carousel">
@@ -85,17 +167,20 @@
     <div class="dots" id="dots"></div>
   </section>
 
-  <!-- 5. Baralho de Motivos -->
+  <!-- 6. Baralho de Motivos -->
   <section class="wrap">
     <h2 data-i="reasH"></h2>
     <p class="muted" data-i="reasS"></p>
     <div class="cards" id="cards"></div>
   </section>
 
-  <!-- 6. Desejo -->
+  <!-- 7. Desejo + Bolo de Aniversário Interativo com Velas -->
   <section class="wrap" id="wish">
     <h2 data-i="wishH"></h2>
     <p class="muted" data-i="wishP"></p>
+    <div class="cake-stage">
+      <canvas id="cakeCanvas" width="320" height="250" aria-label="Bolo de aniversário com velas"></canvas>
+    </div>
     <button class="btn" id="wishBtn" data-i="wishB"></button>
     <p id="wishMsg"></p>
   </section>
