@@ -1,12 +1,12 @@
 /* ==========================================================
-   1. TEXTOS (FR / EN) — zero emojis, estética francesa pura
+   1. TEXTOS (FR / EN) — estética francesa e manuscrita
    ========================================================== */
 const TEXT = {
   fr: {
     coverT: "Un petit quelque chose pour toi…",
     coverB: "Ouvrir la lettre",
     heroS: "Joyeux anniversaire",
-    heroH: "mon amour",
+    heroH: "c'est de l'amour quand ça repose l'âme",
     letterH: "Une lettre pour toi",
     finH: "La Bourse de Notre Amour",
     finS: "Croissance exponentielle depuis notre rencontre",
@@ -24,7 +24,7 @@ const TEXT = {
     songB: "Chantons",
     galH: "Nos souvenirs",
     reasH: "Pourquoi je t'aime",
-    reasS: "Tire une carte du jeu ♥",
+    reasS: "Je t'adore ♡ — tire une carte",
     wishH: "Fais un vœu",
     wishP: "Ferme les yeux, pense à ton souhait, puis souffle les bougies.",
     wishB: "Souffler les bougies",
@@ -44,7 +44,7 @@ const TEXT = {
       "Joyeux anniversaire, et que viennent encore beaucoup, beaucoup d'années. Que Jésus te bénisse et te donne de longues et belles années de vie.",
       "Je t'aime, aujourd'hui et pour toujours.",
     ],
-    sig: "— Avec tout mon amour ♥",
+    sig: "Je t'adore ♡",
     lyrics: [
       ["Joyeux anniversaire,", "Happy birthday,"],
       ["Joyeux anniversaire,", "Happy birthday,"],
@@ -87,7 +87,7 @@ const TEXT = {
     coverT: "A little something for you…",
     coverB: "Open the letter",
     heroS: "Happy birthday",
-    heroH: "my love",
+    heroH: "c'est de l'amour quand ça repose l'âme",
     letterH: "A letter for you",
     finH: "The Stock Market of Our Love",
     finS: "Exponential growth since the day we met",
@@ -105,7 +105,7 @@ const TEXT = {
     songB: "Let's sing",
     galH: "Our memories",
     reasH: "Why I love you",
-    reasS: "Pick a card from the deck ♥",
+    reasS: "Je t'adore ♡ — pick a card",
     wishH: "Make a wish",
     wishP: "Close your eyes, think of your wish, then blow out the candles.",
     wishB: "Blow out the candles",
@@ -125,7 +125,7 @@ const TEXT = {
       "Happy birthday, and may many, many more come. May Jesus bless you and give you long, beautiful years of life.",
       "I love you, today and always.",
     ],
-    sig: "— With all my love ♥",
+    sig: "Je t'adore ♡",
     slides: [
       "That smile is my favorite place in the world.",
       "Effortlessly elegant — it's just you being you.",
@@ -195,7 +195,6 @@ function render() {
     )
     .join("");
 
-  // Galeria parisiense com vidro fosco (blur)
   $("#track").innerHTML = t.slides
     .map(
       (m, i) =>
@@ -223,7 +222,7 @@ function render() {
           <div>
             <div class="face front">
               <span class="suit-top">${rank}</span>
-              <span class="center-heart">♥</span>
+              <span class="center-heart">♡</span>
               <span class="suit-bot">${rank}</span>
             </div>
             <div class="face back">
@@ -255,12 +254,15 @@ function observeLetter() {
 }
 
 /* ==========================================================
-   3b. CARROSSEL DE FOTOS
+   3b. CARROSSEL DE FOTOS (CORRIGIDO)
    ========================================================== */
 function goTo(n) {
   const total = TEXT[state.lang].slides.length;
-  state.slide = (n + total) % total;
-  $("#track").style.transform = `translateX(-${state.slide * 100}%)`;
+  state.slide = ((n % total) + total) % total;
+  const track = $("#track");
+  if (track) {
+    track.style.transform = `translate3d(-${state.slide * 100}%, 0, 0)`;
+  }
   document
     .querySelectorAll("#dots button")
     .forEach((d, i) => d.classList.toggle("on", i === state.slide));
@@ -339,7 +341,7 @@ function startFinanceChart() {
     const chartH = H - padT - padB;
 
     cx.save();
-    cx.strokeStyle = "rgba(232, 199, 155, 0.14)";
+    cx.strokeStyle = "rgba(246, 239, 230, 0.14)";
     cx.lineWidth = 1 * dpr;
     cx.setLineDash([4 * dpr, 4 * dpr]);
     for (let g = 0; g <= 4; g++) {
@@ -363,8 +365,8 @@ function startFinanceChart() {
     cx.clip();
 
     const areaGrad = cx.createLinearGradient(0, padT, 0, padT + chartH);
-    areaGrad.addColorStop(0, "rgba(217, 56, 90, 0.36)");
-    areaGrad.addColorStop(1, "rgba(217, 56, 90, 0.0)");
+    areaGrad.addColorStop(0, "rgba(185, 35, 40, 0.42)");
+    areaGrad.addColorStop(1, "rgba(185, 35, 40, 0.0)");
 
     cx.beginPath();
     cx.moveTo(pts[0].x, padT + chartH);
@@ -375,8 +377,8 @@ function startFinanceChart() {
     cx.fill();
 
     const lineGrad = cx.createLinearGradient(padL, 0, W - padR, 0);
-    lineGrad.addColorStop(0, "#d9385a");
-    lineGrad.addColorStop(1, "#e8c79b");
+    lineGrad.addColorStop(0, "#b92328");
+    lineGrad.addColorStop(1, "#f6efe6");
 
     cx.beginPath();
     cx.strokeStyle = lineGrad;
@@ -393,22 +395,22 @@ function startFinanceChart() {
       const pointThresh = idx / (pts.length - 1);
       if (progress >= pointThresh) {
         cx.beginPath();
-        cx.fillStyle = "#160409";
-        cx.strokeStyle = idx === pts.length - 1 ? "#e8c79b" : "#d9385a";
+        cx.fillStyle = "#1c0507";
+        cx.strokeStyle = idx === pts.length - 1 ? "#f6efe6" : "#b92328";
         cx.lineWidth = 2.5 * dpr;
         cx.arc(p.x, p.y, 5 * dpr, 0, Math.PI * 2);
         cx.fill();
         cx.stroke();
 
         if (idx === pts.length - 1) {
-          cx.fillStyle = "#e8c79b";
+          cx.fillStyle = "#f6efe6";
           cx.font = `600 ${11 * dpr}px Montserrat, sans-serif`;
           cx.textAlign = "center";
           cx.fillText("ATH ♥", p.x, p.y - 12 * dpr);
         }
       }
 
-      cx.fillStyle = "rgba(252, 243, 245, 0.72)";
+      cx.fillStyle = "rgba(251, 244, 235, 0.74)";
       cx.font = `${10 * dpr}px Montserrat, sans-serif`;
       cx.textAlign = "center";
       cx.fillText(labels[idx], p.x, H - 10 * dpr);
@@ -437,27 +439,24 @@ function startBirthdayCake() {
     cx.clearRect(0, 0, W, H);
     tick += 0.08;
 
-    // Prato dourado
     cx.beginPath();
     cx.ellipse(W / 2, 224, 128, 16, 0, 0, Math.PI * 2);
-    cx.fillStyle = "#e8c79b";
+    cx.fillStyle = "#f6efe6";
     cx.fill();
     cx.beginPath();
     cx.ellipse(W / 2, 221, 118, 12, 0, 0, Math.PI * 2);
-    cx.fillStyle = "#c9a06c";
+    cx.fillStyle = "#d9c9b4";
     cx.fill();
 
-    // Base do bolo (andar inferior - veludo vinho)
-    cx.fillStyle = "#4d0e22";
+    cx.fillStyle = "#590b10";
     cx.beginPath();
     cx.roundRect(72, 156, 176, 62, 12);
     cx.fill();
-    cx.strokeStyle = "#e8c79b";
+    cx.strokeStyle = "#f6efe6";
     cx.lineWidth = 1.5;
     cx.stroke();
 
-    // Cobertura escorrendo (carmim)
-    cx.fillStyle = "#d9385a";
+    cx.fillStyle = "#b92328";
     cx.beginPath();
     cx.moveTo(72, 168);
     for (let x = 72; x <= 248; x += 22) {
@@ -469,16 +468,14 @@ function startBirthdayCake() {
     cx.closePath();
     cx.fill();
 
-    // Segundo andar do bolo (superior)
-    cx.fillStyle = "#69142f";
+    cx.fillStyle = "#781117";
     cx.beginPath();
     cx.roundRect(102, 106, 116, 52, 10);
     cx.fill();
-    cx.strokeStyle = "#e8c79b";
+    cx.strokeStyle = "#f6efe6";
     cx.stroke();
 
-    // Cobertura superior creme champagne
-    cx.fillStyle = "#fcf1e3";
+    cx.fillStyle = "#f6efe6";
     cx.beginPath();
     cx.moveTo(102, 116);
     for (let x = 102; x <= 218; x += 19.3) {
@@ -490,21 +487,19 @@ function startBirthdayCake() {
     cx.closePath();
     cx.fill();
 
-    // Coração vetorial no centro do bolo
-    cx.fillStyle = "#e8c79b";
+    cx.fillStyle = "#f6efe6";
     cx.font = "20px serif";
     cx.textAlign = "center";
     cx.fillText("♥", W / 2, 196);
 
-    // 3 Velas no topo
     const candleXs = [132, 160, 188];
     candleXs.forEach((kx, idx) => {
-      cx.fillStyle = idx === 1 ? "#e8c79b" : "#f2849e";
+      cx.fillStyle = idx === 1 ? "#f6efe6" : "#d6686c";
       cx.beginPath();
       cx.roundRect(kx - 4, 72, 8, 34, 3);
       cx.fill();
 
-      cx.strokeStyle = "#2b0918";
+      cx.strokeStyle = "#2a070b";
       cx.lineWidth = 1.5;
       cx.beginPath();
       cx.moveTo(kx, 72);
@@ -515,8 +510,8 @@ function startBirthdayCake() {
         const flicker = Math.sin(tick + idx * 1.7) * 2.2;
         const grad = cx.createRadialGradient(kx, 56, 1, kx, 56, 16);
         grad.addColorStop(0, "rgba(255, 250, 224, 0.95)");
-        grad.addColorStop(0.5, "rgba(232, 199, 155, 0.65)");
-        grad.addColorStop(1, "rgba(217, 56, 90, 0)");
+        grad.addColorStop(0.5, "rgba(246, 239, 230, 0.65)");
+        grad.addColorStop(1, "rgba(185, 35, 40, 0)");
 
         cx.fillStyle = grad;
         cx.beginPath();
@@ -543,7 +538,7 @@ function startBirthdayCake() {
         continue;
       }
       cx.beginPath();
-      cx.fillStyle = `rgba(252, 243, 245, ${s.alpha})`;
+      cx.fillStyle = `rgba(246, 239, 230, ${s.alpha})`;
       cx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
       cx.fill();
     }
@@ -572,7 +567,6 @@ function blowCandlesSmoke() {
 const fireworks = [];
 const vectorBursts = [];
 
-// Desenha um coração vetorial limpo no canvas
 function drawCanvasHeart(ctx, x, y, size, color, rotation = 0) {
   ctx.save();
   ctx.translate(x, y);
@@ -586,9 +580,8 @@ function drawCanvasHeart(ctx, x, y, size, color, rotation = 0) {
   ctx.restore();
 }
 
-// Explosão de corações e pétalas vetoriais (sem nenhum emoji)
 function burst(x, y, n = 18) {
-  const colors = ["#d9385a", "#e8c79b", "#f2849e", "#9e1938"];
+  const colors = ["#b92328", "#f6efe6", "#d6686c", "#8f171c"];
   for (let i = 0; i < n; i++) {
     const angle = Math.random() * Math.PI * 2;
     const speed = 1.8 + Math.random() * 4.5;
@@ -608,7 +601,7 @@ function burst(x, y, n = 18) {
 
 function launchHeartFirework(cxX, cxY) {
   const count = 90;
-  const palette = ["#d9385a", "#e8c79b", "#f2849e", "#fff5ec", "#9e1938"];
+  const palette = ["#b92328", "#f6efe6", "#d6686c", "#fffaf2", "#8f171c"];
   for (let i = 0; i < count; i++) {
     const angle = (Math.PI * 2 * i) / count;
     const hx = 16 * Math.pow(Math.sin(angle), 3);
@@ -646,7 +639,6 @@ function startBackground() {
   resize();
   addEventListener("resize", resize);
 
-  // Pétalas de rosa flutuando suavemente (substituindo o visual de estrelas)
   const petalCount = innerWidth < 640 ? 22 : 38;
   const petals = Array.from({ length: petalCount }, () => ({
     x: Math.random() * innerWidth,
@@ -662,7 +654,6 @@ function startBackground() {
     alpha: 0.14 + Math.random() * 0.22,
   }));
 
-  // Coração paramétrico matemático em ouro e carmim
   let t = 0;
   const trail = [];
   const maxPoints = 190;
@@ -682,7 +673,6 @@ function startBackground() {
     cx.clearRect(0, 0, W, H);
     bCx.clearRect(0, 0, W, H);
 
-    // 1. Pétalas de rosa e mini-corações românticos caindo
     petals.forEach((p) => {
       p.phase += p.swayFreq;
       p.y += p.vy;
@@ -697,11 +687,11 @@ function startBackground() {
       cx.save();
       cx.globalAlpha = p.alpha;
       if (p.isHeart) {
-        drawCanvasHeart(cx, p.x, p.y, p.size * 1.1, "#d9385a", p.rot * 0.3);
+        drawCanvasHeart(cx, p.x, p.y, p.size * 1.1, "#b92328", p.rot * 0.3);
       } else {
         cx.translate(p.x, p.y);
         cx.rotate(p.rot);
-        cx.fillStyle = "#b82547";
+        cx.fillStyle = "#9e1b1f";
         cx.beginPath();
         cx.ellipse(0, 0, p.size, p.size * 0.55, 0, 0, Math.PI * 2);
         cx.fill();
@@ -709,7 +699,6 @@ function startBackground() {
       cx.restore();
     });
 
-    // 2. Coração Paramétrico Central (traçado fino dourado e rubi)
     const scale = Math.min(W, H) * 0.021;
     const pt = heartFormula(t, scale);
     trail.push(pt);
@@ -719,7 +708,7 @@ function startBackground() {
     cx.save();
     for (let i = 0; i < trail.length; i++) {
       const alpha = (i / trail.length) * 0.22;
-      cx.strokeStyle = `rgba(217, 56, 90, ${alpha})`;
+      cx.strokeStyle = `rgba(185, 35, 40, ${alpha})`;
       cx.lineWidth = 1;
       cx.beginPath();
       cx.moveTo(W / 2, H / 2);
@@ -729,7 +718,7 @@ function startBackground() {
 
     if (trail.length > 1) {
       cx.beginPath();
-      cx.strokeStyle = "rgba(232, 199, 155, 0.62)";
+      cx.strokeStyle = "rgba(246, 239, 230, 0.62)";
       cx.lineWidth = 1.6;
       cx.moveTo(trail[0].x, trail[0].y);
       for (let i = 1; i < trail.length; i++) {
@@ -739,15 +728,14 @@ function startBackground() {
 
       const head = trail[trail.length - 1];
       cx.beginPath();
-      cx.fillStyle = "#fcf3f5";
-      cx.shadowColor = "#d9385a";
+      cx.fillStyle = "#fbf4eb";
+      cx.shadowColor = "#b92328";
       cx.shadowBlur = 12;
       cx.arc(head.x, head.y, 2.8, 0, Math.PI * 2);
       cx.fill();
     }
     cx.restore();
 
-    // 3. Fogos de Artifício em Coração
     for (let i = fireworks.length - 1; i >= 0; i--) {
       const f = fireworks[i];
       f.history.push({ x: f.x, y: f.y });
@@ -783,7 +771,6 @@ function startBackground() {
       cx.restore();
     }
 
-    // 4. Explosões de corações vetoriais nos cliques
     for (let i = vectorBursts.length - 1; i >= 0; i--) {
       const b = vectorBursts[i];
       b.x += b.vx;
@@ -828,15 +815,15 @@ function startWaveform() {
     phase += active ? 0.09 : 0.025;
 
     const waves = [
-      { color: "rgba(217, 56, 90, 0.85)", freq: 0.018, speed: 1, width: 2.4 },
+      { color: "rgba(185, 35, 40, 0.88)", freq: 0.018, speed: 1, width: 2.4 },
       {
-        color: "rgba(232, 199, 155, 0.65)",
+        color: "rgba(246, 239, 230, 0.68)",
         freq: 0.026,
         speed: -1.4,
         width: 1.7,
       },
       {
-        color: "rgba(242, 132, 158, 0.42)",
+        color: "rgba(214, 104, 108, 0.45)",
         freq: 0.012,
         speed: 0.7,
         width: 1.4,
@@ -881,8 +868,8 @@ function setMusicIcon() {
   if (!icon) return;
   icon.style.opacity = musicOn ? "1" : "0.55";
   $("#mus").style.borderColor = musicOn
-    ? "rgba(217, 56, 90, 0.85)"
-    : "rgba(232, 199, 155, 0.28)";
+    ? "rgba(246, 239, 230, 0.8)"
+    : "rgba(246, 239, 230, 0.28)";
 }
 
 function loadYouTube() {
