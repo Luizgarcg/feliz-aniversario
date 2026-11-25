@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Joyeux anniversaire Emiliano ❤️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Fundo: blobs coloridos + canvas generativo (coração matemático + constelações + fogos) -->
+  <div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div id="burst" aria-hidden="true"></div>
+
+  <!-- SVG oculto para recorte perfeito em formato de coração no carrossel -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <clipPath id="heartClip" clipPathUnits="objectBoundingBox">
+        <path d="M0.5,0.92 C0.48,0.90 0.05,0.62 0.05,0.31 C0.05,0.14 0.18,0.03 0.33,0.03 C0.42,0.03 0.48,0.08 0.5,0.14 C0.52,0.08 0.58,0.03 0.67,0.03 C0.82,0.03 0.95,0.14 0.95,0.31 C0.95,0.62 0.52,0.90 0.5,0.92 Z"/>
+      </clipPath>
+    </defs>
+  </svg>
+
+  <!-- Capa -->
+  <div id="cover" class="glass">
+    <button class="envelope" id="open" aria-label="Open">💌</button>
+    <p class="eyebrow" data-i="coverT"></p>
+    <button class="btn" id="open2" data-i="coverB"></button>
+  </div>
+
+  <!-- Barra fixa: música + idioma -->
+  <nav id="bar">
+    <button class="glass" id="mus" aria-label="Music">🎵</button>
+    <button class="glass" id="lang">EN</button>
+  </nav>
+  <div id="yt" aria-hidden="true" style="position:fixed;left:0;bottom:0;width:1px;height:1px;opacity:0;pointer-events:none"></div>
+  <audio id="bgm" src="audio/musica.mp3" loop></audio>
+  <audio id="song" src="audio/parabens-fr.mp3"></audio>
+
+  <!-- 1. Início -->
+  <header id="hero" class="wrap">
+    <p class="eyebrow" data-i="heroS"></p>
+    <h1>Emiliano</h1>
+    <div id="age">22</div>
+    <p class="eyebrow" data-i="heroH"></p>
+    <p class="muted" id="cd"></p>
+  </header>
+
+  <!-- 2. Carta + dois cupidos -->
+  <section class="wrap">
+    <h2 data-i="letterH"></h2>
+    <div class="letter-row">
+      <button class="cupid left" id="cupidL" aria-label="Cupid"><span>👼</span><span class="bow">🏹</span></button>
+      <article class="glass letter" id="letter"></article>
+      <button class="cupid right" id="cupidR" aria-label="Cupid"><span>👼</span><span class="bow">🏹</span></button>
+    </div>
+  </section>
+
+  <!-- 3. Parabéns em francês + Visualizador de Frequência -->
+  <section class="wrap">
+    <h2 data-i="songH"></h2>
+    <div class="glass song">
+      <canvas id="wave" aria-hidden="true"></canvas>
+      <div id="lyrics"></div>
+      <button class="btn" id="sing" data-i="songB"></button>
+    </div>
+  </section>
+
+  <!-- 4. Galeria Romântica em Coração -->
+  <section class="wrap">
+    <h2 data-i="galH"></h2>
+    <div class="carousel glass" id="carousel">
+      <div class="viewport"><div class="track" id="track"></div></div>
+      <button class="nav prev" id="prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="nav next" id="next" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+    <div class="dots" id="dots"></div>
+  </section>
+
+  <!-- 5. Baralho de Motivos -->
+  <section class="wrap">
+    <h2 data-i="reasH"></h2>
+    <p class="muted" data-i="reasS"></p>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <!-- 6. Desejo -->
+  <section class="wrap" id="wish">
+    <h2 data-i="wishH"></h2>
+    <p class="muted" data-i="wishP"></p>
+    <button class="btn" id="wishBtn" data-i="wishB"></button>
+    <p id="wishMsg"></p>
+  </section>
+
+  <footer data-i="foot"></footer>
+
+  <div id="lb"><img alt=""></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
